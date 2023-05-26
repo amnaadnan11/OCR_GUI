@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Canvas Web App</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Canvas Web App</h1>
+    <canvas id="canvas" width="400" height="400" style="border: 1px solid black;"></canvas>
+    <br>
+    <button onclick="clearCanvas()">Clear</button>
+    <button onclick="loadModel()">Load Model</button>
+    <button onclick="predict()">Predict</button>
+    <br>
+    <h2>Prediction Result:</h2>
+    <div id="result"></div>
+    <script>
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext('2d');
+        var isDrawing = false;
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+
+        function startDrawing(e) {
+            isDrawing = true;
+            draw(e);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+            ctx.lineWidth = 10;
+            ctx.lineCap = 'round';
+            ctx.lineTo(e.clientX, e.clientY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX, e.clientY);
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+
+        function clearCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function loadModel() {
+            // Code to load the TensorFlow model goes here
+        }
+
+        function predict() {
+            var imageData = canvas.toDataURL('image/png');
+            $.ajax({
+                type: 'POST',
+                url: '/predict',
+                data: { 'imageData': imageData },
+                success: function (response) {
+                    document.getElementById('result').innerText = response;
+                }
+            });
+        }
+    </script>
+</body>
+</html>
