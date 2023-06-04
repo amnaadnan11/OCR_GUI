@@ -5,6 +5,7 @@ import io
 from PIL import Image
 import numpy as np
 
+from flask import jsonify
 
 model = load_model('model.h5')
 
@@ -37,7 +38,11 @@ def run_tensorflow_model(drawing_data):
     result = model.predict(processed_image)
 
     probs = result[0].tolist()
-    print(probs)
     digit = probs.index(max(probs))
     
-    return str(digit)
+    # print(str((digit, probs)))
+    data = {
+        'digit': digit,
+        'probs': probs
+    }
+    return jsonify(data)

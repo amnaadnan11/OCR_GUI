@@ -67,7 +67,8 @@
                 url: '/predict',
                 data: { 'imageData': imageData },
                 success: function (response) {
-                    document.getElementById('result').innerText = response;
+                    document.getElementById('result').innerText = response['digit'];
+                    document.getElementById('probs').innerText = response['probs'];
                 }
             });
         }
