@@ -15,9 +15,14 @@ def run_tensorflow_model(drawing_data):
     
     # Read the image from bytes
     image = Image.open(io.BytesIO(image_bytes))
+    image.save("./imageRGBA.png")
+    image = image.convert("RGB") # black -> problem -> transparency data is lost when converting to grayscale!
+    image.save("./imageRGB.png")
+    print(f"image.mode is {image.mode}")
 
     # Convert the image to grayscale
-    grayscale_image = image.convert('L')
+    grayscale_image = image.convert("L")
+    grayscale_image.save("./gray.png")
     
     # Preprocess the image
     # resized_image = image.resize((28, 28)) # this one gives error due to larger shape (grayscale conversion reduces dimension)
