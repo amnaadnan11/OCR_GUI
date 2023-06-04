@@ -24,7 +24,10 @@ def run_tensorflow_model(drawing_data):
 
     # Convert the image to grayscale
     grayscale_image = image.convert("L")
+    inverted_grayscale_image = Image.eval(grayscale_image, lambda px : 255 - px)
     grayscale_image.save("./gray.png")
+    inverted_grayscale_image.save("./invertedgray.png")
+    grayscale_image = inverted_grayscale_image
     
     # Preprocess the image
     # resized_image = image.resize((28, 28)) # this one gives error due to larger shape (grayscale conversion reduces dimension)
