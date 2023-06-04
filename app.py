@@ -11,6 +11,10 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+# static files to export css
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    return app.send_static_file(filename)
 
 @app.route('/predict', methods=['POST'])
 def predict():
